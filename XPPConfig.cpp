@@ -153,7 +153,10 @@ int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs 
                             *(string *)cur_ref = line;
                         }
                         else {
-                            /* todo: figure out how to handle c-strings */
+                            /* does this introduce a memory leak because i'm not freeing it anywhere? */
+                            *(char **)cur_ref = new char[ line.length() + 1 ];
+                            copy( line.begin(), line.end(), *(char **)cur_ref );
+                            (*(char **)cur_ref)[ line.length() ] = '\0';
                         }
                         break;
                 }

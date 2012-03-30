@@ -51,7 +51,17 @@ void assertString( string a, string b ) {
 
 void assertCString( char *a, char *b ) {
     printf( "test %s = %s ", a, b );
-    ASSERT_EQUAL
+    /* this needs to be handled specially */
+    tests_total++;
+    if( strcmp( a, b ) == 0 ) {
+        printf( "ok" );
+        tests_passed++;
+    }
+    else {
+        printf( "failed" );
+        tests_failed++;
+    }
+    printf( "\n" ); 
 }
 
 void testInts( void ) {
@@ -524,9 +534,7 @@ int main( void ) {
     testFloats();
     testBools();
     testStrings();
-
-    /* not sure how to handle c strings */
-/*    testCStrings(); */
+    testCStrings(); 
 
     result = tests_failed 
                 ? "FAILURE"
