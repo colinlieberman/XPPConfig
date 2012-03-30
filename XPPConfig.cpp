@@ -34,10 +34,8 @@ XPPCItem *initConfig( int num_configs ) {
         configs[i].ref         = NULL;
         configs[i].key         = "";
         configs[i].check_value = true;
-        configs[i].lower_bound = -65535;
-        configs[i].upper_bound = 65535;
-        configs[i].min_str_len = 0;
-        configs[i].max_str_len = 255;
+        configs[i].min         = -65535;
+        configs[i].max         = 65535;
     }
 
     return configs;
@@ -58,13 +56,13 @@ int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs 
     void *cur_ref;
 
     /* temp values for holding while testing */
-    int tmpi;
-    float tmpf;
+    int     tmpi;
+    float   tmpf;
 
     pref_file.open( config_file_path );
 
     if( ! pref_file ) {
-        fprintf( stderr, "unable to open file %s; using defaults", config_file_path );
+        fprintf( stderr, "can't read file %s", config_file_path );
         return 0;
     }
 
@@ -102,8 +100,8 @@ int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs 
                         tmpi = atoi( line.c_str() );
                         /* test its value if requested */
                         if( cur_item.check_value ) {
-                            if( tmpi < (int)ceil( cur_item.lower_bound  )
-                                 || tmpi > (int)floor( cur_item.upper_bound ) ) {
+                            if( tmpi < (int)ceil( cur_item.min  )
+                                 || tmpi > (int)floor( cur_item.max ) ) {
                             
                                 continue;
                             }
@@ -115,13 +113,49 @@ int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs 
                         tmpf = atof( line.c_str() );
                         /* test the value if rquested */
                         if( cur_item.check_value ) {
-                            if( tmpf < cur_item.lower_bound  
-                                 || tmpf > cur_item.upper_bound ) {
+                            if( tmpf < cur_item.min  
+                                 || tmpf > cur_item.max ) {
                             
                                 continue;
                             }
                         }
                         *(float *)cur_ref = tmpf;
+                        break;
+
+                    case XPPC_TYPE_BOOLEAN:
+                        tmpi = atoi( line.c_str() );
+                        /* test the value if rquested */
+                        /* i think for bools, if it's not zero or one
+                         * we can assume opperator error */
+                        if( cur_item.check_value ) {
+                            if( tmpi < 0 
+                                 || tmpi > 1 ) {
+                            
+                                continue;
+                            }
+                        }
+                        *(bool *)cur_ref = tmpi;
+                        break;
+                    
+                    /* do the length checking for string types together */
+                    case XPPC_TYPE_CSTRING:
+                    case XPPC_TYPE_STRING:
+                        /* test the value if rquested */
+                        if( cur_item.check_value ) {
+                            /* min string length is 0 */
+                            if( line.length() < ( cur_item.min < 0 ? 0 : (int)ceil( cur_item.min ) )
+                                 || line.length() > (int)floor( cur_item.max ) ) {
+                            
+                                continue;
+                            }
+                        }
+                        if( cur_item.type == XPPC_TYPE_STRING ) {
+                            *(string *)cur_ref = line;
+                        }
+                        else {
+                            /* todo: figure out how to handle c-strings */
+                        }
+                        break;
                 }
         }
     }

@@ -19,9 +19,24 @@ Hello World!
 string2
 !dlroW olleH
 
+string 3
+cats
+
+string 4
+dogs
+
+string 5
+potatoes
+
 pos float
 4738.281
 
 neg float
 -29.275
+
+here's a bool
+0
+
+here's another bool
+1
 

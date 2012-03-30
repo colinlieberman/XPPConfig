@@ -9,7 +9,7 @@ using namespace std;
 #define XPPC_TYPE_INT       2
 #define XPPC_TYPE_FLOAT     3
 #define XPPC_TYPE_CSTRING   4
-#define XPPC_TYPE_STRINGOBJ 5
+#define XPPC_TYPE_STRING    5
 
 typedef struct XPPCItem {
     int type;
@@ -17,10 +17,8 @@ typedef struct XPPCItem {
     void *ref;
     
     bool  check_value;
-    float lower_bound;
-    float upper_bound;
-    int   min_str_len;
-    int   max_str_len;
+    float min;
+    float max;
 };
 
 XPPCItem *initConfig( int );
