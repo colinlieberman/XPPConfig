@@ -1,0 +1,27 @@
+Some introductory text at the top.
+And some more down here.
+
+pos int
+10
+
+pos int2
+583
+
+neg int
+-3
+
+neg int2
+-7382
+
+string
+Hello World!
+
+string2
+!dlroW olleH
+
+pos float
+4738.281
+
+neg float
+-29.275
+
