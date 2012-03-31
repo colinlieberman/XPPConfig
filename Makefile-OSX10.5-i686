@@ -1,0 +1,24 @@
+CXX         = g++
+CXXFLAGS    = -Wall 
+INCPATH     = -I.
+
+CXXLIBFLAGS  = $(CXXFLAGS) -c 
+
+LIBOBJECT   = xppconfig.o
+LIBSOURCES  = XPPConfig.cpp XPPConfig.h
+
+LIBNAME     = libxppconfig.a
+
+TESTOBJECT  = test.o
+TESTSOURCES = test.cpp $(LIBNAME)
+
+lib: $(LIBSOURCES)
+	$(CXX) $(CXXLIBFLAGS) -o $(LIBOBJECT) XPPConfig.cpp $(INCPATH)
+	ar rcs $(LIBNAME) $(LIBOBJECT)
+
+test: $(TESTSOURCES)
+	$(CXX) $(CXXFLAGS) $(TESTSOURCES) -o $(TESTOBJECT) -L. -lxppconfig $(INCPATH)
+	./$(TESTOBJECT)
+
+clean:
+	rm $(LIBNAME) $(LIBOBJECT) $(TESTOBJECT) 
