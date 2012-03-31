@@ -60,9 +60,7 @@ PLUGIN_API int XPluginStart(
 						char *		outDesc)
 {
     /* initiize the array of configuration items */
-    XPPCItem *configs = initConfig( NUM_CONFIGS );
-
-    XPLMDebugString( "hello world\n" );
+    XPPCItem *configs = XPPCInit( NUM_CONFIGS );
 
     /* set up what I want from the file -
      * at a minimum, this is type, key,
@@ -80,9 +78,6 @@ PLUGIN_API int XPluginStart(
     
     configs[1].min  = 1;
     configs[1].max  = 4;
-    
-    /* now parse the file */
-    parseConfigFile( "Resources/plugins/HelloWorld/hello.conf", configs, NUM_CONFIGS );
 
     /* First we must fill in the passed in buffers to describe our
 	 * plugin to the plugin-system. */
@@ -90,6 +85,11 @@ PLUGIN_API int XPluginStart(
 	strcpy(outName, "HelloWorld");
 	strcpy(outSig, "xplanesdk.examples.helloworld");
 	strcpy(outDesc, "A plugin that makes a window.");
+    
+    /* now parse the file */
+    if( !XPPCParseConfigFile( "Resources/plugins/HelloWorld/hello.conf", configs, NUM_CONFIGS ) ) {
+        XPLMDebugString( XPPCLastError() );
+    }
 
 	/* Now we create a window.  We pass in a rectangle in left, top,
 	 * right, bottom screen coordinates.  We pass in three callbacks. */

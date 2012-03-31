@@ -69,7 +69,7 @@ void assertCString( char *a, char *b ) {
 
 void testInts( void ) {
     int num_configs = 4; 
-    XPPCItem *configs = initConfig( num_configs );
+    XPPCItem *configs = XPPCInit( num_configs );
 
     /* set defaults */
     int one     = 1, 
@@ -120,7 +120,7 @@ neg int2
     configs[3].key  = "neg int2";
     configs[3].ref  = &four;
 
-    if( !parseConfigFile( "./test_conf.txt", configs, num_configs ) ) {
+    if( !XPPCParseConfigFile( "./test_conf.txt", configs, num_configs ) ) {
         printf( "%s\n", XPPCLastError() );
         return;
     }
@@ -133,7 +133,7 @@ neg int2
     
     /* reset and do test 3:
      * 3. all configs too low, expected default values */
-    configs = initConfig( num_configs );
+    configs = XPPCInit( num_configs );
 
     /* set defaults */
     one     = 1;
@@ -161,7 +161,7 @@ neg int2
     configs[3].ref  = &four;
     configs[3].min = 32757;
 
-    parseConfigFile( "./test_conf.txt", configs, num_configs );
+    XPPCParseConfigFile( "./test_conf.txt", configs, num_configs );
 
     printf( "\ntesting ints with lower bound set to 32767...\n" );
     assertInt( one, 1 );
@@ -171,7 +171,7 @@ neg int2
     
     /* reset and do test 4:
      * 4. testing lower bound equal or above by one */
-    configs = initConfig( num_configs );
+    configs = XPPCInit( num_configs );
 
     /* set defaults */
     one     = 1;
@@ -212,7 +212,7 @@ neg int2
     configs[3].ref  = &four;
     configs[3].min = -7381;
 
-    parseConfigFile( "./test_conf.txt", configs, num_configs );
+    XPPCParseConfigFile( "./test_conf.txt", configs, num_configs );
 
     printf( "\ntesting ints with lower bound equal or one greater...\n" );
     assertInt( one, 1 );
@@ -222,7 +222,7 @@ neg int2
     
     /* reset and do test 5:
      * 5. upper is equal or below by one */
-    configs = initConfig( num_configs );
+    configs = XPPCInit( num_configs );
 
     /* set defaults */
     one     = 1;
@@ -263,7 +263,7 @@ neg int2
     configs[3].ref  = &four;
     configs[3].max = -7382;
 
-    parseConfigFile( "./test_conf.txt", configs, num_configs );
+    XPPCParseConfigFile( "./test_conf.txt", configs, num_configs );
 
     printf( "\ntesting ints with upper bound equal or one under...\n" );
     assertInt( one, 10 );
@@ -274,7 +274,7 @@ neg int2
 
 void testFloats( void ) {
     int num_configs = 2; 
-    XPPCItem *configs = initConfig( num_configs );
+    XPPCItem *configs = XPPCInit( num_configs );
 /*
 pos float
 4738.281
@@ -293,14 +293,14 @@ neg float
     configs[1].key = "neg float";
     configs[1].ref = &two;
     
-    parseConfigFile( "./test_conf.txt", configs, num_configs );
+    XPPCParseConfigFile( "./test_conf.txt", configs, num_configs );
 
     printf( "\ntesting floats with defaults...\n" );
     assertFloat( one, 4738.281 );
     assertFloat( two, -29.275 );
     
     /* reset and do more tests */
-    configs = initConfig( num_configs );
+    configs = XPPCInit( num_configs );
 
     one = 1,
     two = 2;
@@ -320,14 +320,14 @@ neg float
 -29.275
 */
     
-    parseConfigFile( "./test_conf.txt", configs, num_configs );
+    XPPCParseConfigFile( "./test_conf.txt", configs, num_configs );
 
     printf( "\ntesting floats with upper limit .001 under\n" );
     assertFloat( one, 1 );
     assertFloat( two, 2 );
     
     /* reset and do more tests */
-    configs = initConfig( num_configs );
+    configs = XPPCInit( num_configs );
 
     one = 1,
     two = 2;
@@ -340,7 +340,7 @@ neg float
     configs[1].ref = &two;
     configs[1].min = -29.274;
     
-    parseConfigFile( "./test_conf.txt", configs, num_configs );
+    XPPCParseConfigFile( "./test_conf.txt", configs, num_configs );
 
     printf( "\ntesting floats with lower limit .001 over\n" );
     assertFloat( one, 1 );
@@ -349,7 +349,7 @@ neg float
 
 void testBools( void ) {
     int num_configs = 6; 
-    XPPCItem *configs = initConfig( num_configs );
+    XPPCItem *configs = XPPCInit( num_configs );
 /*
 here's a bool
 0
@@ -390,7 +390,7 @@ here's another bool
     configs[5].key  = "neg int2";
     configs[5].ref  = &six;
     
-    parseConfigFile( "./test_conf.txt", configs, num_configs );
+    XPPCParseConfigFile( "./test_conf.txt", configs, num_configs );
 
     printf( "\ntesting bools....\n" );
     assertBool( one, false );
@@ -403,7 +403,7 @@ here's another bool
 
 void testStrings( void ) {
     int num_configs = 5; 
-    XPPCItem *configs = initConfig( num_configs );
+    XPPCItem *configs = XPPCInit( num_configs );
 
     /* set defaults */
     string one   = "foo",
@@ -457,7 +457,7 @@ potatoes
     configs[4].ref  = &five;
     configs[4].max  = 7;
     
-    parseConfigFile( "./test_conf.txt", configs, num_configs );
+    XPPCParseConfigFile( "./test_conf.txt", configs, num_configs );
 
     printf( "\ntesting strings....\n" );
     assertString( one, "Hello World!" );
@@ -469,7 +469,7 @@ potatoes
 
 void testCStrings( void ) {
     int num_configs = 5; 
-    XPPCItem *configs = initConfig( num_configs );
+    XPPCItem *configs = XPPCInit( num_configs );
 
     /* set defaults */
     char *one   = "foo",
@@ -523,7 +523,7 @@ potatoes
     configs[4].ref  = &five;
     configs[4].max  = 7;
     
-    parseConfigFile( "./test_conf.txt", configs, num_configs );
+    XPPCParseConfigFile( "./test_conf.txt", configs, num_configs );
 
     printf( "\ntesting cstrings....\n" );
     assertCString( one, "Hello World!" );

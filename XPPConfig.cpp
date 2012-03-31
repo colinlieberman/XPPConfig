@@ -16,8 +16,13 @@ using namespace std;
 char *err_buffer = new char[ 255 ];
 bool has_error = false;
 
-const char *XPPCLastError( void ) {
-    return (const char *)err_buffer;
+const char *XPPCLastError() {
+    /* TODO: obviously the "last error' metaphor doesn't work well with
+     * the parser loop. I should probalby stash these in an array or something,
+     * or make this "DumpErrors" or something */
+    char *buf = new char[ 255 ];
+    sprintf( buf, "XPPConfig: %s\n", err_buffer );
+    return (const char *)buf;
 }
 
 bool XPPCError( void ) {
@@ -36,7 +41,7 @@ string rtrim( string str ) {
     return str;
 }
 
-XPPCItem *initConfig( int num_configs ) {
+XPPCItem *XPPCInit( int num_configs ) {
     XPPCItem *configs = NULL;
     int i;
 
@@ -56,7 +61,7 @@ XPPCItem *initConfig( int num_configs ) {
 }
 
 /* read config file and write to configs */
-int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs ) {
+int XPPCParseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs ) {
 
     string line;
     ifstream pref_file;

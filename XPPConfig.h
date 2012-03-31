@@ -21,7 +21,7 @@ typedef struct XPPCItem {
     float max;
 };
 
-XPPCItem *initConfig( int );
-int parseConfigFile( char *, XPPCItem[], int );
+XPPCItem *XPPCInit( int );
+int XPPCParseConfigFile( char *, XPPCItem[], int );
 const char *XPPCLastError( void );
 bool XPPCError( void );
