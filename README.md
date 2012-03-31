@@ -8,6 +8,7 @@ The goal of this project is to provide a simple, convenient, generic way to pars
 To build:
 --------
 
+1. Get the code: `$ git clone git://github.com/colinlieberman/XPPConfig.git XPPConfig`
 1. Eiter make a Makefile via QTCreator or symlink one of the provided ones
 1. build with `make`
 1. `make test`
