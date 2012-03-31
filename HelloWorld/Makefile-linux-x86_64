@@ -1,0 +1,30 @@
+CC          = gcc
+CXX         = g++
+LIBXPPCPATH = ../
+INCPATH     = -I../../xsdk/CHeaders/XPLM -I../../xsdk/CHeaders/Wrappers -I../../xsdk/CHeaders/Widgets -I$(LIBXPPCPATH) -I.
+DEFINES     = -DXPLM200 -DAPL=1 -DIBM=0 -DLIN=0
+CFLAGS      = -m32 -pipe -O2 -Wall -W -fPIC $(DEFINES)
+CXXFLAGS    = -m32 -pipe -fvisibility=hidden -O2 -Wall -W -fPIC $(DEFINES)
+TARGET      = lin.xpl
+LIBXPPC     = -L$(LIBXPPCPATH) -lxppconfig
+OBJECTS     = hello.o 
+CONF_FILE   = hello.conf
+SOURCES     = hello.cpp  $(XPPC_SOURCE) $(CONF_FILE)
+XP_PATH     = ~/X-Plane\ 9
+PLUGIN_PATH = $(XP_PATH)/Resources/plugins
+PKG_NAME    = HelloWorld
+LINK        = g++
+LFLAGS      = -m32 -Wl,-O1 -shared
+
+hello: $(SOURCES)
+	$(CXX) -c $(CXXFLAGS) -o hello.o hello.cpp $(INCPATH)
+	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(LIBXPPC)
+
+clean: 
+	rm -dfr $(PKG_NAME); rm $(TARGET); rm $(OBJECTS)
+
+install: $(TARGET) $(CONF_FILE)
+	rm -dfr $(PKG_NAME); mkdir $(PKG_NAME)
+	cp $(TARGET) $(PKG_NAME)/
+	cp $(CONF_FILE) $(PKG_NAME)/
+	cp -R $(PKG_NAME) $(PLUGIN_PATH)/ 
