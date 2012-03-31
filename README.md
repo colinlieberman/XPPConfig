@@ -45,6 +45,7 @@ It returns an array of XPPConfigItem structs that you then set up for parsing yo
 #### XPPConfigItem ####
 
 An XPPConfigItem has the following properties:
+
 * int type - one of `XPPC_TYPE_INT`, `XPPC_TYPE_FLOAT`, `XPPC_TYPE_STRING`, etc (see XPPConfig.h for others)
 * string key - the name of the key in the config file. Keys must be on their own line, with values alone on the immediately follwoing line.
 * void *ref - this is a *pointer* to the variable you want to hold the value for the given key 
