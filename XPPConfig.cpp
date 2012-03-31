@@ -81,7 +81,7 @@ int XPPCParseConfigFile( char *config_file_path, XPPCItem *configs, int num_conf
     pref_file.open( config_file_path );
     if( ! pref_file ) {
         ERROR
-        sprintf( err_buffer, "XPPConfig: can't open file %s", config_file_path );       
+        sprintf( err_buffer, "can't open file %s", config_file_path );       
         return 0;
     }
     /* after opening the file, map input array for lookup */
@@ -123,7 +123,7 @@ int XPPCParseConfigFile( char *config_file_path, XPPCItem *configs, int num_conf
                             if( tmpi < (int)ceil( cur_item.min  )
                                  || tmpi > (int)floor( cur_item.max ) ) {
                                 ERROR
-                                sprintf( err_buffer, "XPPConfig: int for key %s not in range", line.c_str() );       
+                                sprintf( err_buffer, "int for key %s not in range", line.c_str() );       
                                 continue;
                             }
                         }
@@ -138,7 +138,7 @@ int XPPCParseConfigFile( char *config_file_path, XPPCItem *configs, int num_conf
                                  || tmpf > cur_item.max ) {
                             
                                 ERROR
-                                sprintf( err_buffer, "XPPConfig: float for key %s not in range", line.c_str() );       
+                                sprintf( err_buffer, "float for key %s not in range", line.c_str() );       
                                 continue;
                             }
                         }
@@ -155,7 +155,7 @@ int XPPCParseConfigFile( char *config_file_path, XPPCItem *configs, int num_conf
                                  || tmpi > 1 ) {
                             
                                 ERROR
-                                sprintf( err_buffer, "XPPConfig: bool for key %s not in range", line.c_str() );       
+                                sprintf( err_buffer, "bool for key %s not in range", line.c_str() );       
                                 continue;
                             }
                         }
@@ -172,7 +172,7 @@ int XPPCParseConfigFile( char *config_file_path, XPPCItem *configs, int num_conf
                                  || line.length() > (int)floor( cur_item.max ) ) {
                             
                                 ERROR
-                                sprintf( err_buffer, "XPPConfig: string for key %s not in range", line.c_str() );       
+                                sprintf( err_buffer, "string for key %s not in range", line.c_str() );       
                                 continue;
                             }
                         }
