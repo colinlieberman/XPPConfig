@@ -23,4 +23,5 @@ typedef struct XPPCItem {
 
 XPPCItem *initConfig( int );
 int parseConfigFile( char *, XPPCItem[], int );
-
+const char *XPPCLastError( void );
+bool XPPCError( void );

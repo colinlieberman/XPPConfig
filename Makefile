@@ -1,14 +1,25 @@
 CXX         = g++
-CXXFLAGS    = -Wall
+CXXFLAGS    = -Wall 
 INCPATH     = -I.
-OBJECT      = test.out
-SOURCES     = test.cpp
 
-obj: $(SOURCES)
-	$(CXX) $(CXXFLAGS) -o $(OBJECT) test.cpp XPPConfig.cpp $(INCPATH)
+CXXLIBFLAGS  = $(CXXFLAGS) -c -fPIC
+LINKFLAGS    = -dynamiclib -Wl,-headerpad_max_install_names,-undefined,dynamic_lookup
 
-test:
-	./$(OBJECT)
+LIBOBJECT   = xppconfig.o
+LIBSOURCES  = XPPConfig.cpp XPPConfig.h
 
-clean: 
-	rm $(OBJECT)
+LIBNAME     = libxppconfig.so
+
+TESTOBJECT  = test.o
+TESTSOURCES = test.cpp $(LIBNAME)
+
+lib: $(LIBSOURCES)
+	$(CXX) $(CXXLIBFLAGS) -o $(LIBOBJECT) XPPConfig.cpp $(INCPATH)
+	$(CXX) $(LINKFLAGS) -o $(LIBNAME) $(LIBOBJECT)
+
+test: $(TESTSOURCES)
+	$(CXX) $(CXXFLAGS) $(TESTSOURCES) -o $(TESTOBJECT) -L. -lxppconfig $(INCPATH)
+	./$(TESTOBJECT)
+
+clean:
+	rm $(LIBNAME) $(LIBOBJECT) $(TESTOBJECT) 

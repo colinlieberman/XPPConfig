@@ -7,8 +7,22 @@
 
 using namespace std;
 
+#define ERROR has_error = true;
+
 #define STATE_FIND_KEY 0
 #define STATE_HAVE_KEY 1
+
+/* buffer to read errors into */
+char *err_buffer = new char[ 255 ];
+bool has_error = false;
+
+const char *XPPCLastError( void ) {
+    return (const char *)err_buffer;
+}
+
+bool XPPCError( void ) {
+    return has_error;
+}
 
 /* helper function for trimming space from the ends of lines */
 string rtrim( string );
@@ -60,12 +74,11 @@ int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs 
     float   tmpf;
 
     pref_file.open( config_file_path );
-
     if( ! pref_file ) {
-        fprintf( stderr, "can't read file %s", config_file_path );
+        ERROR
+        sprintf( err_buffer, "XPPConfig: can't open file %s", config_file_path );       
         return 0;
     }
-
     /* after opening the file, map input array for lookup */
     for( i=0; i<num_configs; i++ ) {
         config_map[ configs[i].key ] = configs[i];
@@ -73,6 +86,8 @@ int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs 
 
     while( !pref_file.eof() )
     {
+        has_error = false;
+
         getline( pref_file, line );
 
         line = rtrim( line );
@@ -102,7 +117,8 @@ int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs 
                         if( cur_item.check_value ) {
                             if( tmpi < (int)ceil( cur_item.min  )
                                  || tmpi > (int)floor( cur_item.max ) ) {
-                            
+                                ERROR
+                                sprintf( err_buffer, "XPPConfig: int for key %s not in range", line.c_str() );       
                                 continue;
                             }
                         }
@@ -116,6 +132,8 @@ int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs 
                             if( tmpf < cur_item.min  
                                  || tmpf > cur_item.max ) {
                             
+                                ERROR
+                                sprintf( err_buffer, "XPPConfig: float for key %s not in range", line.c_str() );       
                                 continue;
                             }
                         }
@@ -131,6 +149,8 @@ int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs 
                             if( tmpi < 0 
                                  || tmpi > 1 ) {
                             
+                                ERROR
+                                sprintf( err_buffer, "XPPConfig: bool for key %s not in range", line.c_str() );       
                                 continue;
                             }
                         }
@@ -146,6 +166,8 @@ int parseConfigFile( char *config_file_path, XPPCItem *configs, int num_configs 
                             if( line.length() < ( cur_item.min < 0 ? 0 : (int)ceil( cur_item.min ) )
                                  || line.length() > (int)floor( cur_item.max ) ) {
                             
+                                ERROR
+                                sprintf( err_buffer, "XPPConfig: string for key %s not in range", line.c_str() );       
                                 continue;
                             }
                         }

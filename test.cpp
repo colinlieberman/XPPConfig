@@ -11,7 +11,10 @@
         tests_failed++; \
         printf( "failed" ); \
     } \
-    printf( "\n" ); 
+    printf( "\n" ); \
+    if( XPPCError() ) { \
+        printf( "error was %s", XPPCLastError() );\
+    }
 
 void assertInt( int, int );
 void assertFloat( float, float );
@@ -117,7 +120,10 @@ neg int2
     configs[3].key  = "neg int2";
     configs[3].ref  = &four;
 
-    parseConfigFile( "./test_conf.txt", configs, num_configs );
+    if( !parseConfigFile( "./test_conf.txt", configs, num_configs ) ) {
+        printf( "%s\n", XPPCLastError() );
+        return;
+    }
 
     printf( "\ntesting ints with default settings...\n" );
     assertInt( one, 10 );
